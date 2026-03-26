@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1stAID V.1.0 - DEMO </title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: top center;  background:#d8e4ef;display: flex ;justify-content:center; padding: 30px 0 48px; overflow: hidden;}
+.phone{width:720px; height:1500px;background:#f0f4f8;border-radius:60px;border:2px solid #b0c4d8;box-shadow:0 32px 80px rgba(2,51,115,0.18);display:flex;flex-direction:column;overflow:hidden;position:relative;}
+.status-bar{background:#e8f3fb;padding:18px 36px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;z-index:30;}
+.status-bar span{font-size:21px;color:#023373;font-weight:500;}
+.top-header{background:#023373;padding:18px 36px 18px;flex-shrink:0;z-index:30;}
+.header-top{display:flex;justify-content:space-between;align-items:center;}
+.logo-wrap{display:flex;align-items:center;margin-left:10px;}
+.logo-box{width:54px;height:54px;background:white;border-radius:14px;display:flex;align-items:center;justify-content:center; margin-right: 10px;}
+.logo-1st{color:white;font-size:30px;font-weight:500;}
+.logo-aid{color: white;font-size:30px;font-weight:700;}
+.logo-ai {color: #f0a500; font-weight:700;}
+
+.notif-btn{width:48px;height:48px;border-radius:50%;background:rgba(10,148,225,0.22);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;}
+/* scroll area fills the middle */
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth; }
+.scroll-area::-webkit-scrollbar{width:0;}
+/* fixed bottom nav */
+.bottom-nav{position: relative; z-index: 999; display:flex;justify-content:space-around;padding:16px 28px 24px;background:#023373;flex-shrink:0;z-index:30;border-top:1.5px solid rgba(255,255,255,0.08);}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;flex:1;}
+.nav-bar{width:36px;height:5px;border-radius:3px;background:rgba(255,255,255,0.18);}
+.nav-bar.active{background:#0a94e1;}
+.nav-label{font-size:18px;color:rgba(255,255,255,0.5);font-weight:400;}
+.nav-label.active{color:white;font-weight:600;}
+.screen{display:none;}
+.screen.active{display:block;}
+.section-title{font-size:18px;font-weight:600;color:#4a6a8a;padding:20px 28px 10px;text-transform:uppercase;letter-spacing:0.7px;}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #f0f4f8; 
+  padding-bottom: 12px; 
+}
+/* subheaders */
+.screen-subheader{background:#023373;padding:0 36px 24px;}
+.sh-eyebrow{color:#a8c8e8;font-size:19px;margin-bottom:5px;}
+.sh-title{color:white;font-size:30px;font-weight:600;}
+.sh-desc{color:#7ec8f0;font-size:19px;line-height:1.5;margin-top:7px;}
+/* alert */
+.location-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.loc-dot{width:8px;height:8px;background:#0a94e1;border-radius:50%;}
+.location-text{color:#a8c8e8;font-size:19px;}
+.season-badge{background:rgba(10,148,225,0.2);border-radius:24px;padding:7px 16px;display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(10,148,225,0.35);}
+.season-badge span{color:#7ec8f0;font-size:18px;}
+.alert-banner{margin:0 24px;margin-top:-14px;background:#eedcdc;border-radius:18px;padding:16px 18px;border:2px solid #A32D2D;display:flex;align-items:flex-start;gap:12px;}
+.alert-icon-box{width:38px;height:38px;background:#A32D2D;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center; margin-top: 8px;}
+.alert-title{font-size:19px;font-weight:600;color:#A32D2D;margin-bottom:3px;}
+.alert-sub{font-size:17px;color:#994d4d;line-height:1.5;}
+.illness-cards{display:flex;flex-direction:column;gap:10px;padding:0 24px;}
+.illness-card{background: #c9e6f8;border-radius:16px;border:1px solid #244c69;padding:16px 18px;display:flex;align-items:center;gap:14px;}
+.ill-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.ill-info{flex:1;}
+.ill-name{font-size:20px;font-weight:600;color:#023373;margin-bottom:3px;}
+.ill-desc{font-size:17px;color:#5a7a9a;}
+.severity-pill{padding:6px 14px;border-radius:24px;font-size:16px;font-weight:600;white-space:nowrap;}
+.sev-basic{background:#e7fee6;color:#0c421c;}
+.sev-medium{background:#fff3cd;color:#856404;}
+.sev-assist{background:#ffe3c5;color:#d17000;}
+.stock-card{background:white;border-radius:16px;border:1px solid #dde8f0;padding:16px 18px;margin:0 24px;}
+.stock-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.stock-title{font-size:19px;font-weight:600;color:#023373;}
+.see-all{font-size:17px;color:#0a94e1;font-weight:500;}
+.med-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.med-chip{background:#f0f7fd;border:1px solid #b3d4f0;border-radius:24px;padding:8px 16px;font-size:17px;color:#023373;display:flex;align-items:center;gap:6px;}
+.med-dot{width:7px;height:7px;border-radius:50%;background:#0a94e1;}
+.doh-section{padding:0 24px;}
+.doh-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.doh-badge{background:#023373;color:#7ec8f0;font-size:16px;font-weight:600;padding:5px 12px;border-radius:24px;}
+.doh-sub{font-size:16px;color:#5a7a9a;}
+.protocol-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.protocol-card{background:white;border-radius:15px;border:1px solid #dde8f0;padding:14px 16px;}
+.proto-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;font-size:18px;}
+.proto-title{font-size:18px;font-weight:600;color:#023373;margin-bottom:3px;}
+.proto-desc{font-size:16px;color:#5a7a9a;line-height:1.45;}
+.proto-full{background:white;border-radius:15px;border:1px solid #dde8f0;padding:14px 16px;margin-top:10px;display:flex;align-items:flex-start;gap:12px;}
+.proto-full-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.proto-full-title{font-size:18px;font-weight:600;color:#023373;margin-bottom:4px;}
+.proto-full-desc{font-size:16px;color:#5a7a9a;line-height:1.45;}
+/* alert CTA */
+.alert-actions{display:flex;gap:12px;padding:22px 24px 28px;}
+.sos-btn{flex:1;background:#A32D2D;border-radius:16px;padding:18px 12px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;border:1.5px solid #e05555;}
+.sos-text{color:white;font-size:19px;font-weight:600;line-height:1.2;}
+.sos-sub{color:#f0aaaa;font-size:15px;margin-top:2px;}
+.assess-btn{flex:1;background:#023373;border-radius:16px;padding:18px 12px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;border:1.5px solid #0a94e1;}
+.assess-text{color:white;font-size:19px;font-weight:600;line-height:1.2;}
+.assess-sub{color:#7ec8f0;font-size:15px;margin-top:2px;}
+/* symptom */
+.feeling-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:0 24px;}
+.feel-btn{background:white;border:1.5px solid #dde8f0;border-radius:18px;padding:16px 4px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;}
+.feel-btn.selected{border:2.5px solid #0a94e1;background:#e6f6fe;}
+.feel-face{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.feel-label{font-size:16px;color:#4a6a8a;text-align:center;}
+.feel-btn.selected .feel-label{color:#023373;font-weight:600;}
+.sym-card{background:white;border-radius:20px;border:1px solid #dde8f0;overflow:hidden;margin:0 24px;}
+.sym-group-title{font-size:18px;font-weight:600;color:#4a6a8a;padding:13px 22px 11px;background:#f7fafd;border-bottom:1px solid #dde8f0;}
+.sym-row{display:flex;align-items:center;justify-content:space-between;padding:15px 22px;border-bottom:1px solid #f0f4f8;}
+.sym-row:last-child{border-bottom:none;}
+.sym-left{display:flex;align-items:center;gap:15px;}
+.sym-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;}
+.sym-name{font-size:20px;color:#023373;font-weight:600;}
+.sym-sub{font-size:16px;color:#5a7a9a;margin-top:2px;}
+.toggle{width:62px;height:34px;border-radius:17px;background:#dde8f0;border:none;cursor:pointer;position:relative;flex-shrink:0;}
+.toggle.on{background:#0a94e1;}
+.toggle-knob{width:24px;height:24px;border-radius:50%;background:white;position:absolute;top:5px;left:5px;transition:left 0.18s;}
+.toggle.on .toggle-knob{left:33px;}
+.body-card,.duration-card,.notes-card{background:white;border-radius:20px;border:1px solid #dde8f0;padding:20px 22px;margin:0 24px;}
+.body-label{font-size:18px;color:#5a7a9a;margin-bottom:13px;font-weight:500;}
+.body-parts{display:flex;flex-wrap:wrap;gap:9px;}
+.part-chip{border-radius:30px;padding:9px 20px;font-size:18px;border:1.5px solid #dde8f0;background:white;color:#4a6a8a;cursor:pointer;}
+.part-chip.selected{background:#e6f6fe;border-color:#0a94e1;color:#023373;font-weight:600;}
+.dur-opts{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:4px;}
+.dur-btn{border:1.5px solid #dde8f0;border-radius:14px;padding:15px;font-size:18px;color:#4a6a8a;background:white;cursor:pointer;text-align:center;}
+.dur-btn.selected{border-color:#0a94e1;background:#e6f6fe;color:#023373;font-weight:600;}
+.notes-input{width:100%;border:1.5px solid #dde8f0;border-radius:14px;padding:15px 17px;font-size:18px;color:#023373;background:#f7fafd;resize:none;font-family:'DM Sans',sans-serif;outline:none;margin-top:5px;line-height:1.6;}
+.notes-input:focus{border-color:#0a94e1;}
+/* symptom CTA */
+.sym-actions{padding:22px 24px 28px; display:flex; flex-direction:column;gap:12px;}
+.analyze-btn{background:#023373;border-radius:16px;padding:20px;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;border:1.5px solid #0a94e1;width:100%;}
+.analyze-text{color:white;font-size:22px;font-weight:600;}
+.sym-secondary-row{display:flex;gap:12px;}
+.sym-sos-btn{flex:1;background:#A32D2D;border-radius:14px;padding:16px 12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:1.5px solid #e05555;}
+.sym-book-btn{flex:1;background:#f0f7fd;border-radius:14px;padding:16px 12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:1.5px solid #0a94e1;}
+.btn-label{font-size:18px;font-weight:600;color:white;line-height:1.2;}
+.btn-label-blue{font-size:18px;font-weight:600;color:#023373;line-height:1.2;}
+.btn-sub{font-size:14px;margin-top:2px;}
+.disclaimer{font-size:16px;color:#8aabcc;text-align:center;line-height:1.6;padding:0 24px 28px;}
+/* consult */
+.tab-row{display:flex;gap:0;margin-top:16px;background:rgba(255,255,255,0.12);border-radius:15px;padding:5px;}
+.tab{flex:1;padding:13px 10px;border-radius:11px;border:none;background:transparent;cursor:pointer;font-size:19px;color:#a8c8e8;font-weight:400;font-family:'DM Sans',sans-serif;}
+.tab.active{background:#0a94e1;color:white;font-weight:600;}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:0 24px;}
+.type-card{background:white;border-radius:18px;border:2px solid #dde8f0;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:11px;cursor:pointer;}
+.type-card.selected{border-color:#0a94e1;background:#e6f6fe;}
+.type-icon{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.type-name{font-size:21px;font-weight:600;color:#023373;text-align:center;}
+.type-desc{font-size:17px;color:#5a7a9a;text-align:center;line-height:1.4;}
+.type-badge{font-size:16px;padding:5px 13px;border-radius:20px;font-weight:600;}
+.badge-free{background:#e6f9f0;color:#0f6e56;}
+.badge-online{background:#e6f6fe;color:#0a6aad;}
+.doctor-list{display:flex;flex-direction:column;gap:11px;padding:0 24px;}
+.doctor-card{background:white;border-radius:18px;border:1.5px solid #dde8f0;padding:18px 20px;display:flex;align-items:center;gap:15px;cursor:pointer;}
+.doctor-card.selected{border-color:#0a94e1;background:#f0f8ff;}
+.doc-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0;}
+.doc-name{font-size:21px;font-weight:600;color:#023373;}
+.doc-spec{font-size:17px;color:#5a7a9a;margin-top:3px;}
+.doc-meta{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap;}
+.doc-tag{font-size:16px;padding:4px 11px;border-radius:20px;}
+.cal-card{background:white;border-radius:18px;border:1.5px solid #dde8f0;padding:20px 22px;margin:0 24px;}
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.cal-month{font-size:22px;font-weight:600;color:#023373;}
+.cal-nav-btn{width:40px;height:40px;border-radius:50%;background:#f0f7fd;border:1px solid #dde8f0;cursor:pointer;font-size:18px;color:#023373;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-dow{font-size:16px;color:#5a7a9a;text-align:center;padding:5px 0;font-weight:600;}
+.cal-day{width:100%;aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border:none;background:transparent;color:#023373;font-family:'DM Sans',sans-serif;}
+.cal-day.unavailable{color:#c0ccd8;cursor:default;}
+.cal-day.selected{background:#0a94e1;color:white;font-weight:600;}
+.cal-day.today{border:2px solid #0a94e1;}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:0 24px;}
+.time-btn{border:1.5px solid #dde8f0;border-radius:13px;padding:13px 8px;font-size:18px;color:#4a6a8a;background:white;cursor:pointer;text-align:center;font-family:'DM Sans',sans-serif;}
+.time-btn.selected{border-color:#0a94e1;background:#e6f6fe;color:#023373;font-weight:600;}
+.time-btn.full{color:#c0ccd8;border-color:#eef2f6;cursor:default;text-decoration:line-through;}
+.clinic-list{display:flex;flex-direction:column;gap:11px;padding:0 24px;}
+.clinic-card{background:white;border-radius:18px;border:1.5px solid #dde8f0;padding:17px 19px;cursor:pointer;}
+.clinic-card.selected{border-color:#0a94e1;background:#f0f8ff;}
+.clinic-top{display:flex;align-items:center;gap:13px;margin-bottom:9px;}
+.clinic-avatar{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;}
+.clinic-name{font-size:20px;font-weight:600;color:#023373;}
+.clinic-type{font-size:16px;color:#5a7a9a;margin-top:2px;}
+.clinic-meta{display:flex;gap:7px;flex-wrap:wrap;}
+.meta-tag{font-size:16px;padding:5px 13px;border-radius:20px;}
+.tag-open{background:#e6f9f0;color:#0f6e56;}
+.tag-dist{background:#f0f7fd;color:#0a6aad;}
+.tag-free{background:#fff8e1;color:#856404;}
+.confirm-card{background:white;border-radius:18px;border:1.5px solid #dde8f0;padding:18px 20px;margin:0 24px;}
+.confirm-row{display:flex;align-items:flex-start;gap:13px;padding:11px 0;border-bottom:1px solid #f0f4f8;}
+.confirm-row:last-child{border-bottom:none;}
+.conf-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.conf-label{font-size:16px;color:#5a7a9a;margin-bottom:2px;}
+.conf-val{font-size:19px;color:#023373;font-weight:600;}
+/* consult CTA */
+.consult-actions{padding:22px 24px 28px;display:flex;flex-direction:column;gap:12px;}
+.book-confirm-btn{background:#023373;border-radius:16px;padding:20px;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;border:1.5px solid #0a94e1;width:100%;}
+.book-text{color:white;font-size:22px;font-weight:600;}
+.consult-sos-row{display:flex;gap:12px;}
+.consult-sos-btn{flex:1;background:#A32D2D;border-radius:14px;padding:16px 12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:1.5px solid #e05555;}
+.consult-sym-btn{flex:1;background:#f0f7fd;border-radius:14px;padding:16px 12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:1.5px solid #0a94e1;}
+.alert-actions, 
+.sym-actions, 
+.consult-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 20; /* Keeps the buttons above the scrolling text */
+  background: #f0f4f8; /* Matches the phone background to hide scrolling text */
+  
+  /* Adding a subtle shadow makes it look like it's floating above the page */
+  box-shadow: 0 -8px 20px rgba(2, 51, 115, 0.05); 
+  
+  /* Adjusting padding so it sits perfectly above the nav bar */
+  padding: 16px 24px 24px; 
+}
+</style>
+</head>
+<body>
+    
+<div class="phone">
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span>9:41</span><span>1stAID</span><span>●●●</span>
+  </div>
+
+  <!-- TOP HEADER -->
+  <div class="top-header">
+    <div class="header-top">
+      <div class="logo-wrap">
+        <div class="logo-box">
+          <svg width="38" height="38" viewBox="0 0 44 44" fill="none">
+            <circle cx="22" cy="8" r="6" fill="#023373"/>
+            <rect x="17" y="13" width="10" height="24" rx="2" fill="#023373"/>
+            <rect x="24" y="18" width="10" height="7" rx="2" fill="#0a94e1"/>
+            <rect x="25.5" y="19.5" width="6" height="2" fill="white"/>
+            <rect x="28" y="18" width="2" height="7" fill="white"/>
+            <circle cx="13" cy="22" r="2.5" stroke="#f0a500" stroke-width="2" fill="none"/>
+            <circle cx="13" cy="29" r="2.5" stroke="#f0a500" stroke-width="2" fill="none"/>
+            <path d="M13 24.5v2.2M15.5 22l3 3" stroke="#f0a500" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="logo-1st">1st</span><span class="logo-aid"><span class="logo-ai">AI</span>D</span>
+      </div>
+      <button class="notif-btn">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2C8 2 5.5 4.5 5.5 7.5V13L4 15v.5h14V15l-1.5-2V7.5C16.5 4.5 14 2 11 2Z" stroke="#0a94e1" stroke-width="1.5" fill="none"/><path d="M9 16.5a2 2 0 004 0" stroke="#0a94e1" stroke-width="1.5" fill="none"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- SCROLLABLE CONTENT -->
+  <div class="scroll-area">
+
+    <!-- ═══ ALERT SCREEN ═══ -->
+    <div class="screen active" id="screen-alert">
+        <div class="sticky-header">
+      <div class="screen-subheader">
+        <div class="location-row"><div class="loc-dot"></div><span class="location-text">Quezon City, Metro Manila</span></div>
+        <div class="season-badge"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" fill="#0a94e1"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13" stroke="#7ec8f0" stroke-width="1.1" stroke-linecap="round"/></svg><span>Dry Season · March 2026</span></div>
+      </div>
+      <div class="alert-banner">
+        <div class="alert-icon-box"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L1.5 15h15L9 2Z" stroke="white" stroke-width="1.4" fill="none"/><path d="M9 7v4" stroke="white" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="13" r="0.8" fill="white"/></svg></div>
+        <div><div class="alert-title">Seasonal health alert</div><div class="alert-sub">3 illnesses trending in your area. Stock up on recommended medicines.</div></div>
+      </div>
+      </div>
+      <div class="section-title">Trending illnesses nearby</div>
+      <div class="illness-cards">
+        <div class="illness-card"><div class="ill-icon" style="background:#eef6fa;">◉</div><div class="ill-info"><div class="ill-name">Heat rash</div><div class="ill-desc">High humidity · common this month</div></div><div class="severity-pill sev-basic">Basic</div></div>
+        <div class="illness-card"><div class="ill-icon" style="background:#eef6fa;">◉</div><div class="ill-info"><div class="ill-name">Flu &amp; fever</div><div class="ill-desc">Rising cases · Quezon City</div></div><div class="severity-pill sev-medium">Medium</div></div>
+        <div class="illness-card"><div class="ill-icon" style="background:#ffe3c5;">◉</div><div class="ill-info"><div class="ill-name">Dengue fever</div><div class="ill-desc">Alert issued · DOH monitored</div></div><div class="severity-pill sev-assist">Needs assistance</div></div>
+      </div>
+      <div class="section-title">Stock up now</div>
+      <div class="stock-card">
+        <div class="stock-header"><span class="stock-title">Recommended medicines</span><span class="see-all">See all →</span></div>
+        <div class="med-chips">
+          <div class="med-chip"><div class="med-dot"></div>Paracetamol</div>
+          <div class="med-chip"><div class="med-dot"></div>ORS Sachets</div>
+          <div class="med-chip"><div class="med-dot"></div>Antihistamine</div>
+          <div class="med-chip"><div class="med-dot"></div>Calamine lotion</div>
+          <div class="med-chip"><div class="med-dot" style="background:#f0a500;"></div>Vitamin C</div>
+        </div>
+      </div>
+      <div class="section-title">DOH safety protocols</div>
+      <div class="doh-section">
+        <div class="doh-header"><span class="doh-badge">DOH · PH guidelines</span><span class="doh-sub">General prevention for all Filipinos</span></div>
+        <div class="protocol-grid">
+          <div class="protocol-card"><div class="proto-icon" style="background:#d8f1ff;">⬤</div><div class="proto-title">Proper handwashing</div><div class="proto-desc">Wash with soap for 40–60 seconds.</div></div>
+          <div class="protocol-card"><div class="proto-icon" style="background:#d8f1ff;">⬤</div><div class="proto-title">Stay home when sick</div><div class="proto-desc">Rest and isolate to prevent spreading.</div></div>
+          <div class="protocol-card"><div class="proto-icon" style="background:#d8f1ff;">⬤</div><div class="proto-title">Keep vaccines updated</div><div class="proto-desc">Follow DOH immunization schedule.</div></div>
+          <div class="protocol-card"><div class="proto-icon" style="background:#d8f1ff;">⬤</div><div class="proto-title">Safe food handling</div><div class="proto-desc">Cook thoroughly. Separate raw foods.</div></div>
+        </div>
+        <div class="proto-full"><div class="proto-full-icon" style="background:#d8f1ff;">⬤</div><div><div class="proto-full-title">Use alcohol or hand sanitizer</div><div class="proto-full-desc">When soap and water are unavailable. DOH-recommended WASH protocol.</div></div></div>
+        <div class="proto-full" style="margin-top:10px;"><div class="proto-full-icon" style="background:#d8f1ff;">⬤</div><div><div class="proto-full-title">Avoid self-medication</div><div class="proto-full-desc">Do not take antibiotics without a doctor's prescription. Consult your RHU.</div></div></div>
+      </div>
+      <!-- ALERT CTAs: Emergency Call + Check My Symptoms -->
+      <div class="alert-actions">
+        <button class="sos-btn" onclick="emergencyCall()">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4.5 7.5C4.5 6 5.8 4.5 7.5 4.5h.5c.4 0 .7.3.7.7v3a.7.7 0 01-.2.5L7 9.8a12 12 0 005 5l1.2-1.5a.7.7 0 01.5-.2h3c.4 0 .7.3.7.7v.5C17.5 16 16.2 17.5 14.5 17.5A12 12 0 014.5 7.5Z" stroke="white" stroke-width="1.6"/></svg>
+          <div><div class="sos-text">Emergency Call</div><div class="sos-sub">911 · available 24/7</div></div>
+        </button>
+        <button class="assess-btn" onclick="showScreen('symptom')">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3C7.1 3 4 6.1 4 10c0 2.6 1.4 4.9 3.5 6.2V18h7v-1.8C16.6 14.9 18 12.6 18 10c0-3.9-3.1-7-7-7Z" stroke="white" stroke-width="1.6" fill="none"/></svg>
+          <div><div class="assess-text">Check My Symptoms</div><div class="assess-sub">Quick self-assessment</div></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ SYMPTOM SCREEN ═══ -->
+    <div class="screen" id="screen-symptom">
+         <div class="sticky-header"> 
+      <div class="screen-subheader">
+        <div class="sh-eyebrow">Symptom checker</div>
+        <div class="sh-title">How are you feeling?</div>
+        <div class="sh-desc">Tell us your symptoms so we can guide you to the right care.</div>
+      </div>
+       </div>
+      <div class="section-title">What's your feeling right now?</div>
+      
+      <div class="feeling-grid">
+        <div class="feel-btn" onclick="selectFeel(this)"><div class="feel-face" style="background:#e6f9f0;"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#1D9E75" stroke-width="2" fill="none"/><circle cx="15" cy="17" r="2" fill="#1D9E75"/><circle cx="25" cy="17" r="2" fill="#1D9E75"/><path d="M13 25c1.5 3 13 3 14 0" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feel-label">Great</span></div>
+        <div class="feel-btn" onclick="selectFeel(this)"><div class="feel-face" style="background:#e6f6fe;"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#0a94e1" stroke-width="2" fill="none"/><circle cx="15" cy="17" r="2" fill="#0a94e1"/><circle cx="25" cy="17" r="2" fill="#0a94e1"/><path d="M14 25h12" stroke="#0a94e1" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feel-label">Okay</span></div>
+        <div class="feel-btn selected" onclick="selectFeel(this)"><div class="feel-face" style="background:#fff8e1;"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#f0a500" stroke-width="2" fill="none"/><circle cx="15" cy="17" r="2" fill="#f0a500"/><circle cx="25" cy="17" r="2" fill="#f0a500"/><path d="M15 27c1-2 9-2 10 0" stroke="#f0a500" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feel-label">Unwell</span></div>
+        <div class="feel-btn" onclick="selectFeel(this)"><div class="feel-face" style="background:#fff0e0;"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#b85c00" stroke-width="2" fill="none"/><path d="M14 15l2 2M24 15l2 2" stroke="#b85c00" stroke-width="2" stroke-linecap="round"/><path d="M14 27c1-3 12-3 12 0" stroke="#b85c00" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feel-label">Bad</span></div>
+        <div class="feel-btn" onclick="selectFeel(this)"><div class="feel-face" style="background:#fde8e8;"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#A32D2D" stroke-width="2" fill="none"/><path d="M14 15l2.5 2.5M23.5 15L26 17.5M14 28c1.5-4 11-4 12 0" stroke="#A32D2D" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feel-label">Severe</span></div>
+      </div>
+      <div class="section-title">Select your symptoms</div>
+      <div class="sym-card">
+        <div class="sym-group-title">Common symptoms</div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#e8edf8;">◉</div><div><div class="sym-name">Headache</div><div class="sym-sub">Head pain or pressure</div></div></div><button class="toggle on" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#fde8e8;">◉</div><div><div class="sym-name">Fever</div><div class="sym-sub">Body temp above 37.5°C</div></div></div><button class="toggle on" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#fff0e0;">◉</div><div><div class="sym-name">Body aches</div><div class="sym-sub">Muscle pain or fatigue</div></div></div><button class="toggle" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#f0f4f8;">◉</div><div><div class="sym-name">Chills</div><div class="sym-sub">Shivering or cold feeling</div></div></div><button class="toggle on" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+        <div class="sym-group-title" style="border-top:1px solid #dde8f0;">Respiratory</div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#e6f6fe;">◉</div><div><div class="sym-name">Cough</div><div class="sym-sub">Dry or with phlegm</div></div></div><button class="toggle on" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#f0f7fd;">◉</div><div><div class="sym-name">Difficulty breathing</div><div class="sym-sub">Shortness of breath</div></div></div><button class="toggle" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+        <div class="sym-group-title" style="border-top:1px solid #dde8f0;">Digestive</div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#fff8e1;">◉</div><div><div class="sym-name">Nausea / vomiting</div><div class="sym-sub">Upset stomach</div></div></div><button class="toggle" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+        <div class="sym-row"><div class="sym-left"><div class="sym-icon" style="background:#f0f7fd;">◉</div><div><div class="sym-name">Diarrhea</div><div class="sym-sub">Loose or watery stools</div></div></div><button class="toggle" onclick="toggleSym(this)"><div class="toggle-knob"></div></button></div>
+      </div>
+      <div class="section-title">Where does it hurt?</div>
+      <div class="body-card">
+        <div class="body-label">Select all affected areas</div>
+        <div class="body-parts">
+          <span class="part-chip selected" onclick="toggleChip(this)">Head</span><span class="part-chip" onclick="toggleChip(this)">Throat</span><span class="part-chip selected" onclick="toggleChip(this)">Chest</span><span class="part-chip" onclick="toggleChip(this)">Abdomen</span><span class="part-chip" onclick="toggleChip(this)">Back</span><span class="part-chip" onclick="toggleChip(this)">Joints</span><span class="part-chip" onclick="toggleChip(this)">Skin</span><span class="part-chip" onclick="toggleChip(this)">Limbs</span>
+        </div>
+      </div>
+      <div class="section-title">How long have you felt this?</div>
+      <div class="duration-card">
+        <div class="body-label">Select duration</div>
+        <div class="dur-opts">
+          <button class="dur-btn" onclick="selectDur(this)">Less than a day</button>
+          <button class="dur-btn selected" onclick="selectDur(this)">1–3 days</button>
+          <button class="dur-btn" onclick="selectDur(this)">4–7 days</button>
+          <button class="dur-btn" onclick="selectDur(this)">More than a week</button>
+        </div>
+      </div>
+      <div class="section-title">Additional notes</div>
+      <div class="notes-card">
+        <textarea class="notes-input" rows="4" placeholder="Describe anything else — e.g. took paracetamol, no improvement..."></textarea>
+      </div>
+      <!-- SYMPTOM CTAs: Analyze + Emergency Call + Book Doctor -->
+      <div class="sym-actions">
+        <button class="analyze-btn">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3C7.1 3 4 6.1 4 10c0 2.6 1.4 4.9 3.5 6.2V18h7v-1.8C16.6 14.9 18 12.6 18 10c0-3.9-3.1-7-7-7Z" stroke="white" stroke-width="1.6" fill="none"/></svg>
+          <span class="analyze-text" onclick="analyzeSymptoms()" >Analyze My Symptoms</span>
+        </button>
+        <div class="sym-secondary-row">
+          <button class="sym-sos-btn" onclick="emergencyCall()">
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4.5 7.5C4.5 6 5.8 4.5 7.5 4.5h.5c.4 0 .7.3.7.7v3a.7.7 0 01-.2.5L7 9.8a12 12 0 005 5l1.2-1.5a.7.7 0 01.5-.2h3c.4 0 .7.3.7.7v.5C17.5 16 16.2 17.5 14.5 17.5A12 12 0 014.5 7.5Z" stroke="white" stroke-width="1.6"/></svg>
+            <div><div class="btn-label">Emergency Call</div><div class="btn-sub" style="color:#f0aaaa;">911 · 24/7</div></div>
+          </button>
+          <button class="sym-book-btn" onclick="showScreen('consult')">
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="12" rx="3" stroke="#023373" stroke-width="1.6" fill="none"/><path d="M8 16l-2 3h10l-2-3" stroke="#023373" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <div><div class="btn-label-blue">Book a Doctor</div><div class="btn-sub" style="color:#0a6aad;">Free consult</div></div>
+          </button>
+        </div>
+        <div class="disclaimer">⚠ This does not replace a licensed physician. In emergencies, call 911 immediately.</div>
+      </div>
+    </div>
+
+    <!-- ═══ CONSULT SCREEN ═══ -->
+    <div class="screen" id="screen-consult">
+        <div class="sticky-header">  
+      <div class="screen-subheader">
+        <div class="sh-title">Consult &amp; Book</div>
+        <div class="sh-desc">Free online consultation or book a clinic appointment near you.</div>
+        <div class="tab-row">
+          <button class="tab active" onclick="switchTab(this,'online')">Online Consultation</button>
+          <button class="tab" onclick="switchTab(this,'clinic')">Book Clinic</button>
+        </div>
+        </div>
+      </div>
+      <div id="panel-online">
+        <div class="section-title">Consultation type</div>
+        <div class="type-grid">
+          <div class="type-card selected" onclick="selectType(this)"><div class="type-icon" style="background:#e6f6fe;">▶</div><div class="type-name">Video call</div><div class="type-desc">Face-to-face with a licensed doctor</div><span class="type-badge badge-free">Free</span></div>
+          <div class="type-card" onclick="selectType(this)"><div class="type-icon" style="background:#e8edf8;">🖷</div><div class="type-name">Chat consult</div><div class="type-desc">Text-based with a health officer</div><span class="type-badge badge-online">Online</span></div>
+        </div>
+        <div class="section-title">Choose a doctor</div>
+        <div class="doctor-list">
+          <div class="doctor-card selected" onclick="selectDoc(this)"><div class="doc-avatar" style="background:#e6f6fe;color:#023373;">DR</div><div><div class="doc-name">Dr. Reyes, Maria</div><div class="doc-spec">General Practitioner · 8 yrs exp.</div><div class="doc-meta"><span class="doc-tag" style="background:#e6f9f0;color:#0f6e56;">Available</span><span class="doc-tag" style="background:#e6f6fe;color:#0a6aad;">⭐ 4.9</span><span class="doc-tag" style="background:#fff8e1;color:#856404;">Free</span></div></div></div>
+          <div class="doctor-card" onclick="selectDoc(this)"><div class="doc-avatar" style="background:#e8edf8;color:#023373;">DC</div><div><div class="doc-name">Dr. Cruz, Jose</div><div class="doc-spec">Internal Medicine · 12 yrs exp.</div><div class="doc-meta"><span class="doc-tag" style="background:#e6f9f0;color:#0f6e56;">Available</span><span class="doc-tag" style="background:#e6f6fe;color:#0a6aad;">⭐ 4.8</span><span class="doc-tag" style="background:#fff8e1;color:#856404;">Free</span></div></div></div>
+          <div class="doctor-card" onclick="selectDoc(this)"><div class="doc-avatar" style="background:#fde8e8;color:#A32D2D;">DS</div><div><div class="doc-name">Dr. Santos, Ana</div><div class="doc-spec">Pediatrician · 6 yrs exp.</div><div class="doc-meta"><span class="doc-tag" style="background:#fff0e0;color:#b85c00;">Busy · 15 min</span><span class="doc-tag" style="background:#e6f6fe;color:#0a6aad;">⭐ 4.7</span></div></div></div>
+        </div>
+        <div class="section-title">Pick a date</div>
+        <div class="cal-card">
+          <div class="cal-nav"><button class="cal-nav-btn">‹</button><span class="cal-month">March 2026</span><button class="cal-nav-btn">›</button></div>
+          <div class="cal-grid">
+            <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div><div class="cal-dow">Tue</div><div class="cal-dow">Wed</div><div class="cal-dow">Thu</div><div class="cal-dow">Fri</div><div class="cal-dow">Sat</div>
+            <button class="cal-day unavailable">1</button><button class="cal-day unavailable">2</button><button class="cal-day unavailable">3</button><button class="cal-day unavailable">4</button><button class="cal-day unavailable">5</button><button class="cal-day unavailable">6</button><button class="cal-day unavailable">7</button>
+            <button class="cal-day unavailable">8</button><button class="cal-day unavailable">9</button><button class="cal-day unavailable">10</button><button class="cal-day unavailable">11</button><button class="cal-day unavailable">12</button><button class="cal-day unavailable">13</button><button class="cal-day unavailable">14</button>
+            <button class="cal-day unavailable">15</button><button class="cal-day unavailable">16</button><button class="cal-day unavailable">17</button><button class="cal-day unavailable">18</button><button class="cal-day unavailable">19</button><button class="cal-day unavailable">20</button><button class="cal-day unavailable">21</button>
+            <button class="cal-day unavailable">22</button><button class="cal-day unavailable">23</button><button class="cal-day unavailable">24</button><button class="cal-day unavailable">25</button><button class="cal-day unavailable">26</button><button class="cal-day today" onclick="selectDay(this)">27</button><button class="cal-day" onclick="selectDay(this)">28</button>
+            <button class="cal-day selected" onclick="selectDay(this)">29</button><button class="cal-day" onclick="selectDay(this)">30</button><button class="cal-day" onclick="selectDay(this)">31</button>
+          </div>
+        </div>
+        <div class="section-title">Pick a time</div>
+        <div class="time-grid">
+          <button class="time-btn full">9:00 AM</button><button class="time-btn" onclick="selectTime(this)">9:30 AM</button><button class="time-btn selected" onclick="selectTime(this)">10:00 AM</button>
+          <button class="time-btn" onclick="selectTime(this)">10:30 AM</button><button class="time-btn full">11:00 AM</button><button class="time-btn" onclick="selectTime(this)">11:30 AM</button>
+          <button class="time-btn" onclick="selectTime(this)">1:00 PM</button><button class="time-btn" onclick="selectTime(this)">2:00 PM</button><button class="time-btn" onclick="selectTime(this)">3:00 PM</button>
+        </div>
+        <div class="section-title">Confirm booking</div>
+        <div class="confirm-card">
+          <div class="confirm-row"><div class="conf-icon" style="background:#d8f1ff;">✔</div><div><div class="conf-label">Type</div><div class="conf-val">Video Call Consultation</div></div></div>
+          <div class="confirm-row"><div class="conf-icon" style="background:#d8f1ff;">✔</div><div><div class="conf-label">Doctor</div><div class="conf-val">Dr. Maria Reyes, GP</div></div></div>
+          <div class="confirm-row"><div class="conf-icon" style="background:#d8f1ff;">✔</div><div><div class="conf-label">Schedule</div><div class="conf-val">March 29, 2026 · 10:00 AM</div></div></div>
+          <div class="confirm-row"><div class="conf-icon" style="background:#d8f1ff;">✔</div><div><div class="conf-label">Fee</div><div class="conf-val">Free · DOH-subsidized</div></div></div>
+        </div>
+      </div>
+      <div id="panel-clinic" style="display:none;">
+        <div class="section-title">Clinics near you</div>
+        <div class="clinic-list">
+          <div class="clinic-card selected" onclick="selectClinic(this)"><div class="clinic-top"><div class="clinic-avatar" style="background:#e6f6fe;">◉</div><div><div class="clinic-name">Quezon City Health Center</div><div class="clinic-type">Public RHU · Government</div></div></div><div class="clinic-meta"><span class="meta-tag tag-open">Open now</span><span class="meta-tag tag-dist">0.8 km away</span><span class="meta-tag tag-free">Free consultation</span></div></div>
+          <div class="clinic-card" onclick="selectClinic(this)"><div class="clinic-top"><div class="clinic-avatar" style="background:#e8edf8;">◉</div><div><div class="clinic-name">Novaliches District Hospital</div><div class="clinic-type">Government Hospital</div></div></div><div class="clinic-meta"><span class="meta-tag tag-open">Open 24/7</span><span class="meta-tag tag-dist">2.3 km away</span><span class="meta-tag tag-free">PhilHealth accepted</span></div></div>
+          <div class="clinic-card" onclick="selectClinic(this)"><div class="clinic-top"><div class="clinic-avatar" style="background:#fff4e5;">◉</div><div><div class="clinic-name">MedExpress Clinic</div><div class="clinic-type">Private · Walk-in</div></div></div><div class="clinic-meta"><span class="meta-tag tag-open">Open until 8PM</span><span class="meta-tag tag-dist">1.1 km away</span></div></div>
+        </div>
+      </div>
+      <!-- CONSULT CTAs: Confirm Booking + Emergency Call + Check Symptoms -->
+      <div class="consult-actions">
+        <button class="book-confirm-btn" onclick="confirmBooking()">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11l5 5 9-9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="book-text">Confirm Booking</span>
+        </button>
+        <div class="consult-sos-row">
+          <button class="consult-sos-btn" onclick="emergencyCall()">
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4.5 7.5C4.5 6 5.8 4.5 7.5 4.5h.5c.4 0 .7.3.7.7v3a.7.7 0 01-.2.5L7 9.8a12 12 0 005 5l1.2-1.5a.7.7 0 01.5-.2h3c.4 0 .7.3.7.7v.5C17.5 16 16.2 17.5 14.5 17.5A12 12 0 014.5 7.5Z" stroke="white" stroke-width="1.6"/></svg>
+            <div><div class="btn-label">Emergency Call</div><div class="btn-sub" style="color:#f0aaaa;">911 · 24/7</div></div>
+          </button>
+          <button class="consult-sym-btn" onclick="showScreen('symptom')">
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 3C7.1 3 4 6.1 4 10c0 2.6 1.4 4.9 3.5 6.2V18h7v-1.8C16.6 14.9 18 12.6 18 10c0-3.9-3.1-7-7-7Z" stroke="#023373" stroke-width="1.6" fill="none"/></svg>
+            <div><div class="btn-label-blue">Check Symptoms</div><div class="btn-sub" style="color:#0a6aad;">Self-assessment</div></div>
+          </button>
+        </div>
+        <div class="disclaimer">⚠ This does not replace a licensed physician. In emergencies, call 911 immediately.</div>
+      </div>
+    </div>
+
+  </div> <!-- end scroll-area -->
+
+  <!-- FIXED BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="showScreen('alert')">
+      <div class="nav-bar active" id="nav-bar-alert"></div>
+      <span class="nav-label active" id="nav-label-alert"> ○ Alerts</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('symptom')">
+      <div class="nav-bar" id="nav-bar-symptom"></div>
+      <span class="nav-label" id="nav-label-symptom">○ Symptoms</span>
+    </div>
+    <div class="nav-item" onclick="showScreen('consult')">
+      <div class="nav-bar" id="nav-bar-consult"></div>
+      <span class="nav-label" id="nav-label-consult"> ○ Consult</span>
+    </div>
+  </div>
+
+</div>
+<script>
+function confirmBooking() {
+  alert("✓ Booking Confirmed!\n\nYour appointment has been successfully scheduled. You will receive a notification reminder soon.");
+}
+
+function analyzeSymptoms() {
+  alert(" ████████▒▒ 80% Loading! Please Wait.....");
+}
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  ['alert','symptom','consult'].forEach(n=>{
+    document.getElementById('nav-bar-'+n).classList.toggle('active',n===name);
+    document.getElementById('nav-label-'+n).classList.toggle('active',n===name);
+  });
+  document.querySelector('.scroll-area').scrollTop=0;
+}
+
+function selectFeel(el){document.querySelectorAll('.feel-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function toggleSym(el){el.classList.toggle('on');}
+function toggleChip(el){el.classList.toggle('selected');}
+function selectDur(el){document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function selectType(el){el.closest('.type-grid').querySelectorAll('.type-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');}
+function selectDoc(el){document.querySelectorAll('.doctor-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');}
+function selectDay(el){document.querySelectorAll('.cal-day').forEach(d=>d.classList.remove('selected'));el.classList.add('selected');}
+function selectTime(el){document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function selectClinic(el){document.querySelectorAll('.clinic-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');}
+function switchTab(el,panel){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  document.getElementById('panel-online').style.display=panel==='online'?'block':'none';
+  document.getElementById('panel-clinic').style.display=panel==='clinic'?'block':'none';
+}
+function emergencyCall(){alert('🕿 Calling 911 — Emergency Services\n\nIn a real app, this would dial immediately.');}
+</script>
+</body>
+</html>
