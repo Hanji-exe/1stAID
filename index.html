@@ -7,24 +7,44 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: top center;  background:#d8e4ef;display: flex ;justify-content:center; padding: 30px 0 48px; overflow: hidden;}
-.phone{width:720px; height:1500px;background:#f0f4f8;border-radius:60px;border:2px solid #b0c4d8;box-shadow:0 32px 80px rgba(2,51,115,0.18);display:flex;flex-direction:column;overflow:hidden;position:relative;}
+
+/* ── DESKTOP: scaled phone on grey canvas ── */
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#d8e4ef;
+  display:flex;
+  justify-content:center;
+  margin-top: 10px;
+  padding:50px 0 48px;
+  overflow:hidden;
+}
+.phone{
+  width:720px;
+  height:1500px;
+  background:#f0f4f8;
+  border-radius:60px;
+  border:2px solid #b0c4d8;
+  box-shadow:0 32px 80px rgba(2,51,115,0.18);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  transform-origin:top center;
+}
+
 .status-bar{background:#e8f3fb;padding:18px 36px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;z-index:30;}
 .status-bar span{font-size:21px;color:#023373;font-weight:500;}
 .top-header{background:#023373;padding:18px 36px 18px;flex-shrink:0;z-index:30;}
 .header-top{display:flex;justify-content:space-between;align-items:center;}
 .logo-wrap{display:flex;align-items:center;margin-left:10px;}
-.logo-box{width:54px;height:54px;background:white;border-radius:14px;display:flex;align-items:center;justify-content:center; margin-right: 10px;}
+.logo-box{width:54px;height:54px;background:white;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-right:10px;}
 .logo-1st{color:white;font-size:30px;font-weight:500;}
-.logo-aid{color: white;font-size:30px;font-weight:700;}
-.logo-ai {color: #f0a500; font-weight:700;}
-
+.logo-aid{color:white;font-size:30px;font-weight:700;}
+.logo-ai{color:#f0a500;font-weight:700;}
 .notif-btn{width:48px;height:48px;border-radius:50%;background:rgba(10,148,225,0.22);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;}
-/* scroll area fills the middle */
-.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth; }
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;}
 .scroll-area::-webkit-scrollbar{width:0;}
-/* fixed bottom nav */
-.bottom-nav{position: relative; z-index: 999; display:flex;justify-content:space-around;padding:16px 28px 24px;background:#023373;flex-shrink:0;z-index:30;border-top:1.5px solid rgba(255,255,255,0.08);}
+.bottom-nav{position:relative;z-index:999;display:flex;justify-content:space-around;padding:16px 28px 24px;background:#023373;flex-shrink:0;border-top:1.5px solid rgba(255,255,255,0.08);}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;flex:1;}
 .nav-bar{width:36px;height:5px;border-radius:3px;background:rgba(255,255,255,0.18);}
 .nav-bar.active{background:#0a94e1;}
@@ -33,31 +53,22 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 .screen{display:none;}
 .screen.active{display:block;}
 .section-title{font-size:18px;font-weight:600;color:#4a6a8a;padding:20px 28px 10px;text-transform:uppercase;letter-spacing:0.7px;}
-
-.sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: #f0f4f8; 
-  padding-bottom: 12px; 
-}
-/* subheaders */
+.sticky-header{position:sticky;top:0;z-index:20;background:#f0f4f8;padding-bottom:12px;}
 .screen-subheader{background:#023373;padding:0 36px 24px;}
 .sh-eyebrow{color:#a8c8e8;font-size:19px;margin-bottom:5px;}
 .sh-title{color:white;font-size:30px;font-weight:600;}
 .sh-desc{color:#7ec8f0;font-size:19px;line-height:1.5;margin-top:7px;}
-/* alert */
 .location-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .loc-dot{width:8px;height:8px;background:#0a94e1;border-radius:50%;}
 .location-text{color:#a8c8e8;font-size:19px;}
 .season-badge{background:rgba(10,148,225,0.2);border-radius:24px;padding:7px 16px;display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(10,148,225,0.35);}
 .season-badge span{color:#7ec8f0;font-size:18px;}
 .alert-banner{margin:0 24px;margin-top:-14px;background:#eedcdc;border-radius:18px;padding:16px 18px;border:2px solid #A32D2D;display:flex;align-items:flex-start;gap:12px;}
-.alert-icon-box{width:38px;height:38px;background:#A32D2D;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center; margin-top: 8px;}
+.alert-icon-box{width:38px;height:38px;background:#A32D2D;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:8px;}
 .alert-title{font-size:19px;font-weight:600;color:#A32D2D;margin-bottom:3px;}
 .alert-sub{font-size:17px;color:#994d4d;line-height:1.5;}
 .illness-cards{display:flex;flex-direction:column;gap:10px;padding:0 24px;}
-.illness-card{background: #c9e6f8;border-radius:16px;border:1px solid #244c69;padding:16px 18px;display:flex;align-items:center;gap:14px;}
+.illness-card{background:#c9e6f8;border-radius:16px;border:1px solid #244c69;padding:16px 18px;display:flex;align-items:center;gap:14px;}
 .ill-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
 .ill-info{flex:1;}
 .ill-name{font-size:20px;font-weight:600;color:#023373;margin-bottom:3px;}
@@ -86,7 +97,6 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 .proto-full-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
 .proto-full-title{font-size:18px;font-weight:600;color:#023373;margin-bottom:4px;}
 .proto-full-desc{font-size:16px;color:#5a7a9a;line-height:1.45;}
-/* alert CTA */
 .alert-actions{display:flex;gap:12px;padding:22px 24px 28px;}
 .sos-btn{flex:1;background:#A32D2D;border-radius:16px;padding:18px 12px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;border:1.5px solid #e05555;}
 .sos-text{color:white;font-size:19px;font-weight:600;line-height:1.2;}
@@ -94,7 +104,6 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 .assess-btn{flex:1;background:#023373;border-radius:16px;padding:18px 12px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;border:1.5px solid #0a94e1;}
 .assess-text{color:white;font-size:19px;font-weight:600;line-height:1.2;}
 .assess-sub{color:#7ec8f0;font-size:15px;margin-top:2px;}
-/* symptom */
 .feeling-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:0 24px;}
 .feel-btn{background:white;border:1.5px solid #dde8f0;border-radius:18px;padding:16px 4px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;}
 .feel-btn.selected{border:2.5px solid #0a94e1;background:#e6f6fe;}
@@ -123,8 +132,7 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 .dur-btn.selected{border-color:#0a94e1;background:#e6f6fe;color:#023373;font-weight:600;}
 .notes-input{width:100%;border:1.5px solid #dde8f0;border-radius:14px;padding:15px 17px;font-size:18px;color:#023373;background:#f7fafd;resize:none;font-family:'DM Sans',sans-serif;outline:none;margin-top:5px;line-height:1.6;}
 .notes-input:focus{border-color:#0a94e1;}
-/* symptom CTA */
-.sym-actions{padding:22px 24px 28px; display:flex; flex-direction:column;gap:12px;}
+.sym-actions{padding:22px 24px 28px;display:flex;flex-direction:column;gap:12px;}
 .analyze-btn{background:#023373;border-radius:16px;padding:20px;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;border:1.5px solid #0a94e1;width:100%;}
 .analyze-text{color:white;font-size:22px;font-weight:600;}
 .sym-secondary-row{display:flex;gap:12px;}
@@ -134,7 +142,6 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 .btn-label-blue{font-size:18px;font-weight:600;color:#023373;line-height:1.2;}
 .btn-sub{font-size:14px;margin-top:2px;}
 .disclaimer{font-size:16px;color:#8aabcc;text-align:center;line-height:1.6;padding:0 24px 28px;}
-/* consult */
 .tab-row{display:flex;gap:0;margin-top:16px;background:rgba(255,255,255,0.12);border-radius:15px;padding:5px;}
 .tab{flex:1;padding:13px 10px;border-radius:11px;border:none;background:transparent;cursor:pointer;font-size:19px;color:#a8c8e8;font-weight:400;font-family:'DM Sans',sans-serif;}
 .tab.active{background:#0a94e1;color:white;font-weight:600;}
@@ -187,32 +194,159 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 .conf-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
 .conf-label{font-size:16px;color:#5a7a9a;margin-bottom:2px;}
 .conf-val{font-size:19px;color:#023373;font-weight:600;}
-/* consult CTA */
 .consult-actions{padding:22px 24px 28px;display:flex;flex-direction:column;gap:12px;}
 .book-confirm-btn{background:#023373;border-radius:16px;padding:20px;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;border:1.5px solid #0a94e1;width:100%;}
 .book-text{color:white;font-size:22px;font-weight:600;}
 .consult-sos-row{display:flex;gap:12px;}
 .consult-sos-btn{flex:1;background:#A32D2D;border-radius:14px;padding:16px 12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:1.5px solid #e05555;}
 .consult-sym-btn{flex:1;background:#f0f7fd;border-radius:14px;padding:16px 12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:1.5px solid #0a94e1;}
-.alert-actions, 
-.sym-actions, 
-.consult-actions {
-  position: sticky;
-  bottom: 0;
-  z-index: 20; /* Keeps the buttons above the scrolling text */
-  background: #f0f4f8; /* Matches the phone background to hide scrolling text */
-  
-  /* Adding a subtle shadow makes it look like it's floating above the page */
-  box-shadow: 0 -8px 20px rgba(2, 51, 115, 0.05); 
-  
-  /* Adjusting padding so it sits perfectly above the nav bar */
-  padding: 16px 24px 24px; 
+.alert-actions,
+.sym-actions,
+.consult-actions{
+  position:sticky;
+  bottom:0;
+  z-index:20;
+  background:#f0f4f8;
+  box-shadow:0 -8px 20px rgba(2,51,115,0.05);
+  padding:16px 24px 24px;
+}
+
+/* ── MOBILE: full viewport, no scaling ── */
+@media (max-width:768px){
+  html{ height:100%; }
+  body{
+    transform: none !important;
+    transform-origin: unset !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: #f0f4f8 !important;
+    height: 100dvh;
+    width: 100vw;
+  }
+  .phone{
+    transform: none !important;
+    transform-origin: unset !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    position: relative !important;
+  }
+  .status-bar { padding: 10px 16px 8px; }
+  .status-bar span { font-size: 13px; }
+  .top-header { padding: 10px 16px 12px; }
+  .logo-box { width: 34px; height: 34px; border-radius: 9px; margin-right: 6px; }
+  .logo-1st, .logo-aid { font-size: 19px; }
+  .notif-btn { width: 32px; height: 32px; }
+  .screen-subheader { padding: 0 16px 14px; }
+  .location-text { font-size: 12px; }
+  .season-badge { padding: 4px 10px; }
+  .season-badge span { font-size: 11px; }
+  .sh-eyebrow { font-size: 12px; }
+  .sh-title { font-size: 18px; }
+  .sh-desc { font-size: 12px; }
+  .alert-banner { margin: 0 14px; margin-top: -10px; padding: 10px 12px; border-radius: 12px; gap: 8px; }
+  .alert-icon-box { width: 28px; height: 28px; border-radius: 7px; margin-top: 4px; }
+  .alert-title { font-size: 13px; }
+  .alert-sub { font-size: 12px; }
+  .section-title { font-size: 11px; padding: 12px 16px 7px; }
+  .illness-cards { gap: 7px; padding: 0 14px; }
+  .illness-card { padding: 10px 12px; gap: 10px; border-radius: 12px; }
+  .ill-icon { width: 34px; height: 34px; font-size: 15px; }
+  .ill-name { font-size: 13px; }
+  .ill-desc { font-size: 11px; }
+  .severity-pill { padding: 4px 9px; font-size: 11px; }
+  .stock-card { margin: 0 14px; padding: 12px 14px; }
+  .stock-title { font-size: 13px; }
+  .see-all { font-size: 12px; }
+  .med-chip { padding: 5px 11px; font-size: 12px; }
+  .doh-section { padding: 0 14px; }
+  .doh-badge { font-size: 11px; padding: 4px 9px; }
+  .doh-sub { font-size: 11px; }
+  .protocol-card { padding: 10px 11px; border-radius: 11px; }
+  .proto-icon { width: 26px; height: 26px; margin-bottom: 5px; font-size: 13px; }
+  .proto-title { font-size: 12px; }
+  .proto-desc { font-size: 11px; }
+  .proto-full { padding: 10px 11px; margin-top: 7px; border-radius: 11px; gap: 9px; }
+  .proto-full-icon { width: 26px; height: 26px; font-size: 13px; }
+  .proto-full-title { font-size: 12px; }
+  .proto-full-desc { font-size: 11px; }
+  .alert-actions, .sym-actions, .consult-actions { gap: 8px; padding: 10px 14px 14px; }
+  .sos-btn, .assess-btn { border-radius: 12px; padding: 12px 10px; gap: 8px; }
+  .sos-text, .assess-text { font-size: 13px; }
+  .sos-sub, .assess-sub { font-size: 11px; }
+  .feeling-grid { gap: 7px; padding: 0 14px; }
+  .feel-btn { padding: 10px 3px; border-radius: 12px; gap: 6px; }
+  .feel-face { width: 36px; height: 36px; }
+  .feel-label { font-size: 11px; }
+  .sym-card { margin: 0 14px; }
+  .sym-group-title { font-size: 12px; padding: 9px 14px 8px; }
+  .sym-row { padding: 10px 14px; }
+  .sym-icon { width: 34px; height: 34px; font-size: 15px; }
+  .sym-name { font-size: 13px; }
+  .sym-sub { font-size: 11px; }
+  .sym-left { gap: 10px; }
+  .toggle { width: 46px; height: 26px; border-radius: 13px; }
+  .toggle-knob { width: 18px; height: 18px; top: 4px; left: 4px; }
+  .toggle.on .toggle-knob { left: 24px; }
+  .body-card, .duration-card, .notes-card { margin: 0 14px; padding: 14px 15px; }
+  .body-label { font-size: 12px; margin-bottom: 9px; }
+  .part-chip { padding: 6px 13px; font-size: 12px; }
+  .dur-btn { padding: 11px; font-size: 12px; border-radius: 10px; }
+  .notes-input { padding: 10px 12px; font-size: 12px; border-radius: 10px; }
+  .analyze-btn { border-radius: 12px; padding: 14px; }
+  .analyze-text { font-size: 15px; }
+  .sym-secondary-row { gap: 8px; }
+  .sym-sos-btn, .sym-book-btn { border-radius: 10px; padding: 11px 9px; }
+  .btn-label, .btn-label-blue { font-size: 12px; }
+  .btn-sub { font-size: 11px; }
+  .disclaimer { font-size: 11px; padding: 0 14px 16px; }
+  .tab-row { margin-top: 10px; padding: 3px; }
+  .tab { padding: 9px 7px; font-size: 12px; border-radius: 8px; }
+  .type-grid { gap: 9px; margin: 0 14px; }
+  .type-card { padding: 14px 10px; gap: 8px; }
+  .type-icon { width: 40px; height: 40px; font-size: 18px; }
+  .type-name { font-size: 14px; }
+  .type-desc { font-size: 11px; }
+  .type-badge { font-size: 11px; padding: 3px 9px; }
+  .doctor-list { gap: 8px; padding: 0 14px; }
+  .doctor-card { padding: 12px 14px; gap: 11px; }
+  .doc-avatar { width: 46px; height: 46px; font-size: 15px; }
+  .doc-name { font-size: 14px; }
+  .doc-spec { font-size: 11px; }
+  .doc-tag { font-size: 11px; padding: 3px 8px; }
+  .cal-card { margin: 0 14px; padding: 14px 15px; }
+  .cal-month { font-size: 15px; }
+  .cal-nav-btn { width: 30px; height: 30px; font-size: 14px; }
+  .cal-dow { font-size: 11px; }
+  .cal-day { font-size: 13px; border-radius: 7px; }
+  .time-grid { gap: 6px; margin: 0 14px; }
+  .time-btn { padding: 9px 5px; font-size: 12px; border-radius: 9px; }
+  .clinic-list { gap: 8px; padding: 0 14px; }
+  .clinic-card { padding: 12px 13px; }
+  .clinic-avatar { width: 38px; height: 38px; font-size: 16px; }
+  .clinic-name { font-size: 13px; }
+  .clinic-type { font-size: 11px; }
+  .meta-tag { font-size: 11px; padding: 3px 9px; }
+  .confirm-card { margin: 0 14px; padding: 12px 14px; }
+  .confirm-row { padding: 8px 0; gap: 10px; }
+  .conf-icon { width: 30px; height: 30px; font-size: 13px; }
+  .conf-label { font-size: 11px; }
+  .conf-val { font-size: 13px; }
+  .book-confirm-btn { border-radius: 12px; padding: 14px; }
+  .book-text { font-size: 15px; }
+  .consult-sos-btn, .consult-sym-btn { border-radius: 10px; padding: 11px 9px; }
+  .bottom-nav { padding: 10px 20px 16px; }
+  .nav-bar { width: 28px; height: 4px; }
+  .nav-label { font-size: 12px; }
 }
 </style>
 </head>
 <body>
-    
-<div class="phone">
+
+<div class="phone" id="thePhone">
 
   <!-- STATUS BAR -->
   <div class="status-bar">
@@ -248,15 +382,15 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 
     <!-- ═══ ALERT SCREEN ═══ -->
     <div class="screen active" id="screen-alert">
-        <div class="sticky-header">
-      <div class="screen-subheader">
-        <div class="location-row"><div class="loc-dot"></div><span class="location-text">Quezon City, Metro Manila</span></div>
-        <div class="season-badge"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" fill="#0a94e1"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13" stroke="#7ec8f0" stroke-width="1.1" stroke-linecap="round"/></svg><span>Dry Season · March 2026</span></div>
-      </div>
-      <div class="alert-banner">
-        <div class="alert-icon-box"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L1.5 15h15L9 2Z" stroke="white" stroke-width="1.4" fill="none"/><path d="M9 7v4" stroke="white" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="13" r="0.8" fill="white"/></svg></div>
-        <div><div class="alert-title">Seasonal health alert</div><div class="alert-sub">3 illnesses trending in your area. Stock up on recommended medicines.</div></div>
-      </div>
+      <div class="sticky-header">
+        <div class="screen-subheader">
+          <div class="location-row"><div class="loc-dot"></div><span class="location-text">Quezon City, Metro Manila</span></div>
+          <div class="season-badge"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" fill="#0a94e1"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13" stroke="#7ec8f0" stroke-width="1.1" stroke-linecap="round"/></svg><span>Dry Season · March 2026</span></div>
+        </div>
+        <div class="alert-banner">
+          <div class="alert-icon-box"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L1.5 15h15L9 2Z" stroke="white" stroke-width="1.4" fill="none"/><path d="M9 7v4" stroke="white" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="13" r="0.8" fill="white"/></svg></div>
+          <div><div class="alert-title">Seasonal health alert</div><div class="alert-sub">3 illnesses trending in your area. Stock up on recommended medicines.</div></div>
+        </div>
       </div>
       <div class="section-title">Trending illnesses nearby</div>
       <div class="illness-cards">
@@ -287,7 +421,6 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
         <div class="proto-full"><div class="proto-full-icon" style="background:#d8f1ff;">⬤</div><div><div class="proto-full-title">Use alcohol or hand sanitizer</div><div class="proto-full-desc">When soap and water are unavailable. DOH-recommended WASH protocol.</div></div></div>
         <div class="proto-full" style="margin-top:10px;"><div class="proto-full-icon" style="background:#d8f1ff;">⬤</div><div><div class="proto-full-title">Avoid self-medication</div><div class="proto-full-desc">Do not take antibiotics without a doctor's prescription. Consult your RHU.</div></div></div>
       </div>
-      <!-- ALERT CTAs: Emergency Call + Check My Symptoms -->
       <div class="alert-actions">
         <button class="sos-btn" onclick="emergencyCall()">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4.5 7.5C4.5 6 5.8 4.5 7.5 4.5h.5c.4 0 .7.3.7.7v3a.7.7 0 01-.2.5L7 9.8a12 12 0 005 5l1.2-1.5a.7.7 0 01.5-.2h3c.4 0 .7.3.7.7v.5C17.5 16 16.2 17.5 14.5 17.5A12 12 0 014.5 7.5Z" stroke="white" stroke-width="1.6"/></svg>
@@ -302,15 +435,14 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 
     <!-- ═══ SYMPTOM SCREEN ═══ -->
     <div class="screen" id="screen-symptom">
-         <div class="sticky-header"> 
-      <div class="screen-subheader">
-        <div class="sh-eyebrow">Symptom checker</div>
-        <div class="sh-title">How are you feeling?</div>
-        <div class="sh-desc">Tell us your symptoms so we can guide you to the right care.</div>
+      <div class="sticky-header">
+        <div class="screen-subheader">
+          <div class="sh-eyebrow">Symptom checker</div>
+          <div class="sh-title">How are you feeling?</div>
+          <div class="sh-desc">Tell us your symptoms so we can guide you to the right care.</div>
+        </div>
       </div>
-       </div>
       <div class="section-title">What's your feeling right now?</div>
-      
       <div class="feeling-grid">
         <div class="feel-btn" onclick="selectFeel(this)"><div class="feel-face" style="background:#e6f9f0;"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#1D9E75" stroke-width="2" fill="none"/><circle cx="15" cy="17" r="2" fill="#1D9E75"/><circle cx="25" cy="17" r="2" fill="#1D9E75"/><path d="M13 25c1.5 3 13 3 14 0" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feel-label">Great</span></div>
         <div class="feel-btn" onclick="selectFeel(this)"><div class="feel-face" style="background:#e6f6fe;"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#0a94e1" stroke-width="2" fill="none"/><circle cx="15" cy="17" r="2" fill="#0a94e1"/><circle cx="25" cy="17" r="2" fill="#0a94e1"/><path d="M14 25h12" stroke="#0a94e1" stroke-width="2" stroke-linecap="round"/></svg></div><span class="feel-label">Okay</span></div>
@@ -353,11 +485,10 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
       <div class="notes-card">
         <textarea class="notes-input" rows="4" placeholder="Describe anything else — e.g. took paracetamol, no improvement..."></textarea>
       </div>
-      <!-- SYMPTOM CTAs: Analyze + Emergency Call + Book Doctor -->
       <div class="sym-actions">
         <button class="analyze-btn">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3C7.1 3 4 6.1 4 10c0 2.6 1.4 4.9 3.5 6.2V18h7v-1.8C16.6 14.9 18 12.6 18 10c0-3.9-3.1-7-7-7Z" stroke="white" stroke-width="1.6" fill="none"/></svg>
-          <span class="analyze-text" onclick="analyzeSymptoms()" >Analyze My Symptoms</span>
+          <span class="analyze-text" onclick="analyzeSymptoms()">Analyze My Symptoms</span>
         </button>
         <div class="sym-secondary-row">
           <button class="sym-sos-btn" onclick="emergencyCall()">
@@ -375,14 +506,14 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
 
     <!-- ═══ CONSULT SCREEN ═══ -->
     <div class="screen" id="screen-consult">
-        <div class="sticky-header">  
-      <div class="screen-subheader">
-        <div class="sh-title">Consult &amp; Book</div>
-        <div class="sh-desc">Free online consultation or book a clinic appointment near you.</div>
-        <div class="tab-row">
-          <button class="tab active" onclick="switchTab(this,'online')">Online Consultation</button>
-          <button class="tab" onclick="switchTab(this,'clinic')">Book Clinic</button>
-        </div>
+      <div class="sticky-header">
+        <div class="screen-subheader">
+          <div class="sh-title">Consult &amp; Book</div>
+          <div class="sh-desc">Free online consultation or book a clinic appointment near you.</div>
+          <div class="tab-row">
+            <button class="tab active" onclick="switchTab(this,'online')">Online Consultation</button>
+            <button class="tab" onclick="switchTab(this,'clinic')">Book Clinic</button>
+          </div>
         </div>
       </div>
       <div id="panel-online">
@@ -431,7 +562,6 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
           <div class="clinic-card" onclick="selectClinic(this)"><div class="clinic-top"><div class="clinic-avatar" style="background:#fff4e5;">◉</div><div><div class="clinic-name">MedExpress Clinic</div><div class="clinic-type">Private · Walk-in</div></div></div><div class="clinic-meta"><span class="meta-tag tag-open">Open until 8PM</span><span class="meta-tag tag-dist">1.1 km away</span></div></div>
         </div>
       </div>
-      <!-- CONSULT CTAs: Confirm Booking + Emergency Call + Check Symptoms -->
       <div class="consult-actions">
         <button class="book-confirm-btn" onclick="confirmBooking()">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11l5 5 9-9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -451,13 +581,13 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
       </div>
     </div>
 
-  </div> <!-- end scroll-area -->
+  </div><!-- end scroll-area -->
 
   <!-- FIXED BOTTOM NAV -->
   <div class="bottom-nav">
     <div class="nav-item" onclick="showScreen('alert')">
       <div class="nav-bar active" id="nav-bar-alert"></div>
-      <span class="nav-label active" id="nav-label-alert"> ○ Alerts</span>
+      <span class="nav-label active" id="nav-label-alert">○ Alerts</span>
     </div>
     <div class="nav-item" onclick="showScreen('symptom')">
       <div class="nav-bar" id="nav-bar-symptom"></div>
@@ -465,45 +595,50 @@ body{font-family:'DM Sans',sans-serif;transform: scale(0.45); transform-origin: 
     </div>
     <div class="nav-item" onclick="showScreen('consult')">
       <div class="nav-bar" id="nav-bar-consult"></div>
-      <span class="nav-label" id="nav-label-consult"> ○ Consult</span>
+      <span class="nav-label" id="nav-label-consult">○ Consult</span>
     </div>
   </div>
 
-</div>
+</div><!-- end .phone -->
+
 <script>
-function confirmBooking() {
-  alert("✓ Booking Confirmed!\n\nYour appointment has been successfully scheduled. You will receive a notification reminder soon.");
+function scaleDesktop() {
+  if (window.innerWidth <= 768) return;
+  const phone = document.getElementById('thePhone');
+  const available = window.innerHeight - 80;
+  const scale = Math.min(available / 1500, 1);
+  phone.style.transform = `scale(${scale})`;
+  phone.style.transformOrigin = 'top center';
 }
+scaleDesktop();
+window.addEventListener('resize', scaleDesktop);
 
-function analyzeSymptoms() {
-  alert(" ████████▒▒ 80% Loading! Please Wait.....");
-}
-
-function showScreen(name){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+name).classList.add('active');
-  ['alert','symptom','consult'].forEach(n=>{
-    document.getElementById('nav-bar-'+n).classList.toggle('active',n===name);
-    document.getElementById('nav-label-'+n).classList.toggle('active',n===name);
+function confirmBooking() { alert("✓ Booking Confirmed!\n\nYour appointment has been successfully scheduled. You will receive a notification reminder soon."); }
+function analyzeSymptoms() { alert(" ████████▒▒ 80% Loading! Please Wait....."); }
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  ['alert','symptom','consult'].forEach(n => {
+    document.getElementById('nav-bar-'   + n).classList.toggle('active', n === name);
+    document.getElementById('nav-label-' + n).classList.toggle('active', n === name);
   });
-  document.querySelector('.scroll-area').scrollTop=0;
+  document.querySelector('.scroll-area').scrollTop = 0;
 }
-
-function selectFeel(el){document.querySelectorAll('.feel-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
-function toggleSym(el){el.classList.toggle('on');}
-function toggleChip(el){el.classList.toggle('selected');}
-function selectDur(el){document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
-function selectType(el){el.closest('.type-grid').querySelectorAll('.type-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');}
-function selectDoc(el){document.querySelectorAll('.doctor-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');}
-function selectDay(el){document.querySelectorAll('.cal-day').forEach(d=>d.classList.remove('selected'));el.classList.add('selected');}
-function selectTime(el){document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
-function selectClinic(el){document.querySelectorAll('.clinic-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');}
-function switchTab(el,panel){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
-  document.getElementById('panel-online').style.display=panel==='online'?'block':'none';
-  document.getElementById('panel-clinic').style.display=panel==='clinic'?'block':'none';
+function selectFeel(el) { document.querySelectorAll('.feel-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
+function toggleSym(el)  { el.classList.toggle('on'); }
+function toggleChip(el) { el.classList.toggle('selected'); }
+function selectDur(el)  { document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
+function selectType(el) { el.closest('.type-grid').querySelectorAll('.type-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
+function selectDoc(el)  { document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
+function selectDay(el)  { document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected')); el.classList.add('selected'); }
+function selectTime(el) { document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
+function selectClinic(el){ document.querySelectorAll('.clinic-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
+function switchTab(el, panel) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); el.classList.add('active');
+  document.getElementById('panel-online').style.display = panel === 'online' ? 'block' : 'none';
+  document.getElementById('panel-clinic').style.display = panel === 'clinic' ? 'block' : 'none';
 }
-function emergencyCall(){alert('🕿 Calling 911 — Emergency Services\n\nIn a real app, this would dial immediately.');}
+function emergencyCall() { alert('🕿 Calling 911 — Emergency Services\n\nIn a real app, this would dial immediately.'); }
 </script>
 </body>
 </html>
